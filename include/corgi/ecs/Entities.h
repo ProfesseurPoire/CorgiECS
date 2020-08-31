@@ -14,26 +14,29 @@ using Optional = std::optional<T>;
 
 namespace corgi
 {
+    class Scene;
     class Entity;
 
-    template<>  // explicit specialization for T = void
-    class corgi::Children<Entity>
+    template<>
+    class Tree<Entity>
     {
-    public:
+        public:
 
-        template<class ... Args>
-        Node<Entity>& emplace_back(Args&&... args)
-        {
-            if (parent_)
-            {
-                return *children_.emplace_back(std::make_unique<Node<T>>(parent_, parent_.get().scene_,  std::forward<Args>(args)...));
-            }
-            return *children_.emplace_back(std::make_unique<Node<T>>(tree_, std::forward<Args>(args)...));
-        }
-    	
+            Tree(Scene& scene):scene_(scene){}
+            Scene& scene_;
     };
+
+    template<>
+    template<>
+    Node<Entity>& Children<Entity>::emplace_back()
+    {
+        if (parent_)
+        {
+            return *children_.emplace_back(std::make_unique<Node<Entity>>(parent_, parent_->get().scene() ));
+        }
+        return *children_.emplace_back(std::make_unique<Node<Entity>>(tree_, tree_.scene_));
+    }
 	
-class Scene;
 
 template <class T>
 using Reference = std::reference_wrapper<T>;

@@ -8,7 +8,6 @@
 
 #include <corgi/logger/log.h>
 
-
 #include <typeindex>
 #include <algorithm>
 #include <optional>

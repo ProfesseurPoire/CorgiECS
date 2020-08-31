@@ -5,6 +5,7 @@ using namespace corgi;
 
 Entities::Entities(Scene& scene):
 	scene_(scene)
+    tree_(scene)
 {}
 
 Node<Entity>& Entities::emplace(const String& name)noexcept
